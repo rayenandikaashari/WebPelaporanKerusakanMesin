@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\TeknisiController;
 
 Route::get('/', function () {
     return redirect()->route('operator.login');
@@ -32,3 +33,69 @@ Route::post('/operator/laporan', [OperatorController::class, 'simpanLaporan'])
 
 Route::post('/operator/logout', [OperatorController::class, 'logout'])
     ->name('operator.logout');
+
+/*
+|--------------------------------------------------------------------------
+| TEKNISI
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/teknisi/login', [TeknisiController::class, 'login'])
+    ->name('teknisi.login');
+
+Route::post('/teknisi/login', [TeknisiController::class, 'authenticate'])
+    ->name('teknisi.authenticate');
+
+Route::get('/teknisi/dashboard', [TeknisiController::class, 'dashboard'])
+    ->name('teknisi.dashboard');
+
+
+/*
+|--------------------------------------------------------------------------
+| LAPORAN KERUSAKAN
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/teknisi/laporan', [TeknisiController::class, 'laporan'])
+    ->name('teknisi.laporan');
+
+Route::get('/teknisi/laporan/{id}', [TeknisiController::class, 'detailLaporan'])
+    ->name('teknisi.laporan.detail');
+
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE PERBAIKAN
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/teknisi/laporan/{id}/status', [TeknisiController::class, 'updateStatus'])
+    ->name('teknisi.laporan.status');
+
+
+/*
+|--------------------------------------------------------------------------
+| MAINTENANCE
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/teknisi/maintenance',
+    [TeknisiController::class, 'maintenance']
+)->name('teknisi.maintenance');
+
+
+Route::post(
+    '/teknisi/maintenance',
+    [TeknisiController::class, 'simpanMaintenance']
+)->name('teknisi.maintenance.simpan');
+
+
+/*
+|--------------------------------------------------------------------------
+| LOGOUT
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/teknisi/logout', [TeknisiController::class, 'logout'])
+    ->name('teknisi.logout');

@@ -1229,3 +1229,781 @@ tbody tr:hover {
     }
 
 }
+
+/* =====================================================
+   TEKNISI
+===================================================== */
+
+.detail-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+.detail-item {
+    background: #f8fafc;
+
+    border: 1px solid #edf0f4;
+
+    border-radius: 8px;
+
+    padding: 15px;
+}
+
+.detail-item span {
+    display: block;
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+    margin-bottom: 6px;
+}
+
+.detail-item strong {
+    font-size: 13px;
+}
+
+.detail-description {
+    margin-bottom: 22px;
+}
+
+.detail-description > span {
+    display: block;
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+    margin-bottom: 7px;
+}
+
+.detail-description h3 {
+    font-size: 16px;
+}
+
+.detail-description p {
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    color: #4b5563;
+}
+
+.damage-photo {
+    max-width: 450px;
+
+    max-height: 300px;
+
+    object-fit: cover;
+
+    border-radius: 8px;
+
+    border: 1px solid #e5e7eb;
+
+    margin-top: 8px;
+}
+
+.divider {
+    border: 0;
+
+    border-top: 1px solid #e5e7eb;
+
+    margin: 28px 0;
+}
+
+.form-section-title {
+    font-size: 16px;
+
+    margin-bottom: 18px;
+}
+
+
+/* =====================================================
+   TEKNISI RESPONSIVE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .damage-photo {
+        width: 100%;
+    }
+
+}
+
+/* =========================================================
+   MAINTENANCE
+========================================================= */
+
+.maintenance-container {
+    width: 100%;
+}
+
+.maintenance-header {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.maintenance-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.maintenance-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: #eef2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.maintenance-title h2 {
+    margin: 0 0 5px;
+    font-size: 22px;
+}
+
+.maintenance-title p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.date-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.date-filter label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.date-filter input {
+    height: 42px;
+    padding: 0 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    font-size: 14px;
+    outline: none;
+}
+
+.date-filter input:focus {
+    border-color: #6366f1;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.maintenance-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.summary-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.summary-card span {
+    display: block;
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.summary-card strong {
+    font-size: 24px;
+}
+
+.summary-card.waiting .summary-icon {
+    background: #f3f4f6;
+}
+
+.summary-card.complete .summary-icon {
+    background: #dcfce7;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.maintenance-progress {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.progress-header strong {
+    display: block;
+}
+
+.progress-header span {
+    display: block;
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 9px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #22c55e;
+    border-radius: 20px;
+    transition: width 0.3s ease;
+}
+
+
+/* =========================================================
+   MACHINE CARD
+========================================================= */
+
+.machine-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.machine-card-header {
+    padding: 23px 25px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.machine-card-header h2 {
+    margin: 0 0 5px;
+    font-size: 20px;
+}
+
+.machine-card-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.all-complete {
+    padding: 9px 14px;
+    background: #dcfce7;
+    color: #15803d;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.not-complete {
+    padding: 9px 14px;
+    background: #f3f4f6;
+    color: #6b7280;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   MACHINE ROW
+========================================================= */
+
+.machine-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.machine-row {
+    display: grid;
+    grid-template-columns: 45px 55px 1fr auto;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 25px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: 0.2s;
+}
+
+.machine-row:last-child {
+    border-bottom: none;
+}
+
+.machine-row:hover {
+    background: #fafafa;
+}
+
+.machine-row.checked {
+    background: #f7fff9;
+}
+
+.machine-row.unchecked {
+    background: #ffffff;
+}
+
+
+/* STATUS CIRCLE */
+
+.status-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checked-circle {
+    background: #22c55e;
+    color: white;
+    font-weight: bold;
+}
+
+.unchecked-circle {
+    background: #d1d5db;
+}
+
+
+/* NUMBER */
+
+.machine-number {
+    font-size: 13px;
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+
+/* INFO */
+
+.machine-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.machine-info strong {
+    font-size: 15px;
+}
+
+.machine-info small {
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.status-text {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.success-text {
+    color: #16a34a;
+}
+
+.waiting-text {
+    color: #9ca3af;
+}
+
+
+/* BUTTON */
+
+.btn-check-machine {
+    border: none;
+    background: #111827;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.btn-check-machine:hover {
+    background: #374151;
+}
+
+.btn-checked {
+    border: none;
+    background: #dcfce7;
+    color: #15803d;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.maintenance-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+}
+
+.maintenance-modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.modal-content {
+    position: relative;
+    width: 500px;
+    max-width: calc(100% - 30px);
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    padding: 22px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.modal-header span {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.modal-header h2 {
+    margin: 5px 0 0;
+    font-size: 20px;
+}
+
+.modal-close {
+    border: none;
+    background: transparent;
+    font-size: 25px;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.modal-body {
+    padding: 22px;
+}
+
+.check-info {
+    display: flex;
+    gap: 13px;
+    padding: 15px;
+    background: #f9fafb;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.check-icon {
+    font-size: 22px;
+}
+
+.check-info strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.check-info p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    font-family: inherit;
+    outline: none;
+}
+
+.form-group textarea:focus {
+    border-color: #6366f1;
+}
+
+.modal-footer {
+    padding: 18px 22px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #111827;
+    color: white;
+}
+
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .maintenance-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .maintenance-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .machine-row {
+        grid-template-columns: 35px 40px 1fr;
+    }
+
+    .machine-action {
+        grid-column: 3;
+    }
+
+    .machine-action button {
+        width: 100%;
+    }
+
+}
+
+/* =========================================
+   TEKNISI - DAFTAR LAPORAN
+========================================= */
+
+.laporan-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.laporan-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    padding: 22px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    transition: 0.2s ease;
+}
+
+.laporan-item:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+}
+
+.laporan-main {
+    flex: 1;
+}
+
+.laporan-code {
+    display: inline-block;
+    margin-bottom: 7px;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.laporan-main h3 {
+    margin: 0 0 12px;
+    color: #111827;
+    font-size: 18px;
+}
+
+.laporan-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 12px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.laporan-description {
+    margin: 0 0 14px;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.laporan-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.status-badge,
+.priority-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 11px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.waiting {
+    color: #92400e;
+    background: #fef3c7;
+}
+
+.status-badge.progress {
+    color: #1d4ed8;
+    background: #dbeafe;
+}
+
+.status-badge.completed {
+    color: #166534;
+    background: #dcfce7;
+}
+
+.priority-badge {
+    color: #6b7280;
+    background: #f3f4f6;
+}
+
+.laporan-action {
+    flex-shrink: 0;
+}
+
+.laporan-action .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 17px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+/* EMPTY STATE */
+
+.empty-state {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    margin-bottom: 15px;
+    font-size: 45px;
+}
+
+.empty-state h3 {
+    margin: 0 0 8px;
+    color: #111827;
+}
+
+.empty-state p {
+    margin: 0;
+    color: #6b7280;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+
+    .laporan-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .laporan-action {
+        width: 100%;
+    }
+
+    .laporan-action .btn-primary {
+        width: 100%;
+    }
+
+}
