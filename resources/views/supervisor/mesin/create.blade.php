@@ -87,7 +87,7 @@
         <div class="form-actions">
 
             <a
-                href="{{ route('supervisor.mesin') }}"
+                href="{{ route('supervisor.mesin.index') }}"
                 class="btn-secondary"
             >
                 Batal

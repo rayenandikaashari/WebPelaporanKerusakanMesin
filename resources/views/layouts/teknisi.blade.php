@@ -50,8 +50,8 @@
 
 
             <!-- Laporan Kerusakan -->
-            <a href="{{ route('teknisi.laporan') }}"
-               class="{{ request()->routeIs('teknisi.laporan*') ? 'active' : '' }}">
+            <a href="{{ route('teknisi.laporan.index') }}"
+               class="{{ request()->routeIs('teknisi.laporan.index*') ? 'active' : '' }}">
 
                 <span>▤</span>
 
@@ -61,8 +61,8 @@
 
 
             <!-- Maintenance -->
-            <a href="{{ route('teknisi.maintenance') }}"
-               class="{{ request()->routeIs('teknisi.maintenance*') ? 'active' : '' }}">
+            <a href="{{ route('teknisi.maintenance.index') }}"
+               class="{{ request()->routeIs('teknisi.maintenance.index*') ? 'active' : '' }}">
 
                 <span>⚒</span>
 

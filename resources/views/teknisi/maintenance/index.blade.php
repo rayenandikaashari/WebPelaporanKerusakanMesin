@@ -51,7 +51,7 @@
 
         {{-- PILIH TANGGAL --}}
         <form
-            action="{{ route('teknisi.maintenance') }}"
+            action="{{ route('teknisi.maintenance.index') }}"
             method="GET"
             class="date-filter"
         >

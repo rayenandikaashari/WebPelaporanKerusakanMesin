@@ -1,3 +1,4 @@
+
 @extends('layouts.operator')
 
 @section('title', 'Buat Laporan')
@@ -6,7 +7,6 @@
 
 @section('page-description', 'Laporkan kerusakan mesin kepada teknisi')
 
-
 @section('content')
 
 <div class="form-container">
@@ -14,69 +14,54 @@
     <div class="form-card">
 
         <div class="form-header">
-
             <div class="form-header-icon">
                 ⚠
             </div>
 
             <div>
-
                 <h2>Form Laporan Kerusakan</h2>
 
                 <p>
                     Isi informasi kerusakan mesin dengan lengkap.
                 </p>
-
             </div>
-
         </div>
 
-
         <form
-            action="{{ route('operator.laporan.simpan') }}"
+            action="{{ route('operator.simpan-laporan') }}"
             method="POST"
             enctype="multipart/form-data"
         >
-
             @csrf
 
-
             <div class="form-group">
-
                 <label>
                     Mesin
                     <span>*</span>
                 </label>
 
                 <select name="mesin" required>
+                    <option value="">Pilih mesin</option>
 
-                    <option value="">
-                        Pilih mesin
-                    </option>
-
-                    <option value="Mesin Produksi 01">
+                    <option value="Mesin Produksi 01" {{ old('mesin') == 'Mesin Produksi 01' ? 'selected' : '' }}>
                         Mesin Produksi 01
                     </option>
 
-                    <option value="Mesin Produksi 02">
+                    <option value="Mesin Produksi 02" {{ old('mesin') == 'Mesin Produksi 02' ? 'selected' : '' }}>
                         Mesin Produksi 02
                     </option>
 
-                    <option value="Mesin Produksi 03">
+                    <option value="Mesin Produksi 03" {{ old('mesin') == 'Mesin Produksi 03' ? 'selected' : '' }}>
                         Mesin Produksi 03
                     </option>
 
-                    <option value="Mesin Packing 01">
+                    <option value="Mesin Packing 01" {{ old('mesin') == 'Mesin Packing 01' ? 'selected' : '' }}>
                         Mesin Packing 01
                     </option>
-
                 </select>
-
             </div>
 
-
             <div class="form-group">
-
                 <label>
                     Judul Kerusakan
                     <span>*</span>
@@ -89,12 +74,9 @@
                     value="{{ old('judul') }}"
                     required
                 >
-
             </div>
 
-
             <div class="form-group">
-
                 <label>
                     Deskripsi Kerusakan
                     <span>*</span>
@@ -106,18 +88,12 @@
                     placeholder="Jelaskan kondisi atau kerusakan mesin secara detail..."
                     required
                 >{{ old('deskripsi') }}</textarea>
-
             </div>
 
-
             <div class="form-group">
-
-                <label>
-                    Foto Kerusakan
-                </label>
+                <label>Foto Kerusakan</label>
 
                 <div class="upload-box">
-
                     <div class="upload-icon">
                         📷
                     </div>
@@ -135,14 +111,10 @@
                         name="foto"
                         accept=".jpg,.jpeg,.png"
                     >
-
                 </div>
-
             </div>
 
-
             <div class="form-footer">
-
                 <a
                     href="{{ route('operator.laporan') }}"
                     class="btn-secondary"
@@ -156,22 +128,18 @@
                 >
                     Kirim Laporan
                 </button>
-
             </div>
 
         </form>
 
     </div>
 
-
     <div class="info-card">
-
         <div class="info-icon">
             ℹ
         </div>
 
         <div>
-
             <h3>Informasi</h3>
 
             <p>
@@ -183,9 +151,7 @@
                 Status laporan dapat Anda pantau melalui menu
                 <strong>Laporan Kerusakan</strong>.
             </p>
-
         </div>
-
     </div>
 
 </div>

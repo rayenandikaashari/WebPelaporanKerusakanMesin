@@ -55,8 +55,8 @@
             </a>
 
 
-            <a href="{{ route('supervisor.mesin') }}"
-               class="{{ request()->routeIs('supervisor.mesin') ? 'active' : '' }}">
+            <a href="{{ route('supervisor.mesin.index') }}"
+               class="{{ request()->routeIs('supervisor.mesin.index') ? 'active' : '' }}">
 
                 <span>⚙</span>
                 Status Mesin
@@ -64,8 +64,8 @@
             </a>
 
 
-            <a href="{{ route('supervisor.laporan') }}"
-               class="{{ request()->routeIs('supervisor.laporan') ? 'active' : '' }}">
+            <a href="{{ route('supervisor.laporan.index') }}"
+               class="{{ request()->routeIs('supervisor.laporan.index') ? 'active' : '' }}">
 
                 <span>▤</span>
                 Laporan Kerusakan
@@ -73,8 +73,8 @@
             </a>
 
 
-            <a href="{{ route('supervisor.maintenance') }}"
-               class="{{ request()->routeIs('supervisor.maintenance') ? 'active' : '' }}">
+            <a href="{{ route('supervisor.maintenance.index') }}"
+               class="{{ request()->routeIs('supervisor.maintenance.index') ? 'active' : '' }}">
 
                 <span>🔧</span>
                 Laporan Maintenance
@@ -105,8 +105,8 @@
             </a>
 
 
-            <a href="{{ route('supervisor.sparepart') }}"
-               class="{{ request()->routeIs('supervisor.sparepart') ? 'active' : '' }}">
+            <a href="{{ route('supervisor.sparepart.index') }}"
+               class="{{ request()->routeIs('supervisor.sparepart.index') ? 'active' : '' }}">
 
                 <span>▣</span>
                 Penggunaan Sparepart

@@ -1,3 +1,4 @@
+
 @extends('layouts.operator')
 
 @section('title', 'Laporan Kerusakan')
@@ -6,30 +7,24 @@
 
 @section('page-description', 'Daftar laporan kerusakan yang Anda buat')
 
-
 @section('content')
 
 <div class="page-action">
 
     <div>
-
         <h2>Daftar Laporan</h2>
 
         <p>
             Anda hanya dapat melihat laporan yang Anda buat sendiri.
         </p>
-
     </div>
 
-    <a href="{{ route('operator.laporan.buat') }}"
+    <a href="{{ route('operator.buat-laporan') }}"
        class="btn-primary">
-
         + Buat Laporan
-
     </a>
 
 </div>
-
 
 <div class="table-card">
 
@@ -48,11 +43,9 @@
                 masalah pada mesin.
             </p>
 
-            <a href="{{ route('operator.laporan.buat') }}"
+            <a href="{{ route('operator.buat-laporan') }}"
                class="btn-primary">
-
                 Buat Laporan
-
             </a>
 
         </div>
@@ -62,17 +55,13 @@
         <table>
 
             <thead>
-
                 <tr>
-
                     <th>ID</th>
                     <th>Mesin</th>
                     <th>Kerusakan</th>
                     <th>Tanggal</th>
                     <th>Status</th>
-
                 </tr>
-
             </thead>
 
             <tbody>
@@ -82,11 +71,9 @@
                     <tr>
 
                         <td>
-
                             <strong>
                                 #{{ str_pad($item['id'], 3, '0', STR_PAD_LEFT) }}
                             </strong>
-
                         </td>
 
                         <td>
@@ -94,7 +81,6 @@
                         </td>
 
                         <td>
-
                             <strong>
                                 {{ $item['judul'] }}
                             </strong>
@@ -102,7 +88,6 @@
                             <small class="table-description">
                                 {{ Str::limit($item['deskripsi'], 60) }}
                             </small>
-
                         </td>
 
                         <td>

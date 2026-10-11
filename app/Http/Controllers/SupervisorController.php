@@ -121,7 +121,7 @@ class SupervisorController extends Controller
 
 
         return view(
-            'supervisor.mesin',
+            'supervisor.mesin.index',
             compact('mesin')
         );
     }
@@ -138,7 +138,7 @@ class SupervisorController extends Controller
         $laporan = $this->dummyLaporan();
 
         return view(
-            'supervisor.laporan',
+            'supervisor.laporan.index',
             compact('laporan')
         );
     }
@@ -155,7 +155,7 @@ class SupervisorController extends Controller
         $maintenance = $this->dummyMaintenance();
 
         return view(
-            'supervisor.maintenance',
+            'supervisor.maintenance.index',
             compact('maintenance')
         );
     }
@@ -172,7 +172,7 @@ class SupervisorController extends Controller
         $laporan = $this->dummyLaporan();
 
         return view(
-            'supervisor.riwayat-kerusakan',
+            'supervisor.riwayat.kerusakan.index',
             compact('laporan')
         );
     }
@@ -194,7 +194,7 @@ class SupervisorController extends Controller
             ->all();
 
         return view(
-            'supervisor.riwayat-perbaikan',
+            'supervisor.riwayat.perbaikan.index',
             compact('laporan')
         );
     }
@@ -219,7 +219,7 @@ class SupervisorController extends Controller
         $sparepart = session('data_sparepart');
 
         return view(
-            'supervisor.sparepart',
+            'supervisor.sparepart.index',
             compact('sparepart')
         );
     }
@@ -259,7 +259,7 @@ class SupervisorController extends Controller
 
 
         return view(
-            'supervisor.data-mesin',
+            'supervisor.data.mesin.index',
             compact('mesin')
         );
     }
@@ -665,7 +665,7 @@ class SupervisorController extends Controller
 
 
         return view(
-            'supervisor.data-sparepart',
+            'supervisor.data.sparepart.index',
             compact('sparepart')
         );
     }
@@ -1082,7 +1082,7 @@ class SupervisorController extends Controller
         ];
 
         return view(
-            'supervisor.data-pengguna',
+            'supervisor.data.pengguna.index',
             compact('pengguna')
         );
     }

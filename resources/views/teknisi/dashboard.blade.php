@@ -28,7 +28,7 @@
     </div>
 
     <a
-        href="{{ route('teknisi.maintenance') }}"
+        href="{{ route('teknisi.maintenance.index') }}"
         class="btn-primary"
     >
         + Laporan Maintenance

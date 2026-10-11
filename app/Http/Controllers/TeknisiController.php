@@ -55,7 +55,7 @@ class TeknisiController extends Controller
     {
         $laporan = $this->dummyLaporan();
 
-        return view('teknisi.laporan', compact('laporan'));
+        return view('teknisi.laporan.index', compact('laporan'));
     }
 
 
@@ -74,7 +74,7 @@ class TeknisiController extends Controller
             abort(404);
         }
 
-        return view('teknisi.detail-laporan', compact('laporan'));
+        return view('teknisi.laporan.show', compact('laporan'));
     }
 
 
@@ -187,7 +187,7 @@ class TeknisiController extends Controller
 
 
         return view(
-            'teknisi.maintenance',
+            'teknisi.maintenance.index',
             compact(
                 'dataMesin',
                 'tanggal',
@@ -260,7 +260,7 @@ class TeknisiController extends Controller
 
 
         return redirect()
-            ->route('teknisi.maintenance', [
+            ->route('teknisi.maintenance.index', [
                 'tanggal' => $tanggal
             ])
             ->with(

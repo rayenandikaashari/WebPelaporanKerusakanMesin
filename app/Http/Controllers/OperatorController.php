@@ -3,46 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OperatorController extends Controller
 {
-    public function login()
-    {
-        if (session()->has('operator')) {
-            return redirect()->route('operator.dashboard');
-        }
-
-        return view('operator.login');
-    }
-
-    public function authenticate(Request $request)
-    {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-
-        if (
-            $request->username === 'operator' &&
-            $request->password === '123456'
-        ) {
-            session([
-                'operator' => [
-                    'id' => 1,
-                    'nama' => 'Budi Operator',
-                    'username' => 'operator',
-                    'role' => 'operator',
-                ]
-            ]);
-
-            return redirect()->route('operator.dashboard');
-        }
-
-        return back()
-            ->withInput()
-            ->with('error', 'Username atau password salah.');
-    }
-
     public function dashboard()
     {
         $this->checkLogin();
@@ -58,14 +22,14 @@ class OperatorController extends Controller
 
         $laporan = session('laporan_operator', []);
 
-        return view('operator.laporan', compact('laporan'));
+        return view('operator.laporan.index', compact('laporan'));
     }
 
     public function buatLaporan()
     {
         $this->checkLogin();
 
-        return view('operator.buat-laporan');
+        return view('operator.laporan.create');
     }
 
     public function simpanLaporan(Request $request)
@@ -73,24 +37,22 @@ class OperatorController extends Controller
         $this->checkLogin();
 
         $request->validate([
-            'mesin' => 'required',
-            'judul' => 'required',
-            'deskripsi' => 'required',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'mesin' => ['required'],
+            'judul' => ['required', 'string', 'max:255'],
+            'deskripsi' => ['required', 'string'],
+            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ]);
 
         $foto = null;
 
         if ($request->hasFile('foto')) {
-
             $folder = public_path('uploads/laporan');
 
-            if (!file_exists($folder)) {
-                mkdir($folder, 0777, true);
+            if (!is_dir($folder)) {
+                mkdir($folder, 0775, true);
             }
 
             $file = $request->file('foto');
-
             $namaFile = time() . '_' . $file->getClientOriginalName();
 
             $file->move($folder, $namaFile);
@@ -108,11 +70,11 @@ class OperatorController extends Controller
             'foto' => $foto,
             'status' => 'Menunggu Ditangani',
             'tanggal' => now()->format('d-m-Y H:i'),
-            'operator' => session('operator.nama'),
+            'operator' => Auth::user()->name,
         ];
 
         session([
-            'laporan_operator' => $laporan
+            'laporan_operator' => $laporan,
         ]);
 
         return redirect()
@@ -120,21 +82,14 @@ class OperatorController extends Controller
             ->with('success', 'Laporan kerusakan berhasil dibuat.');
     }
 
-    public function logout(Request $request)
-    {
-        $request->session()->forget('operator');
-
-        return redirect()
-            ->route('operator.login')
-            ->with('success', 'Anda berhasil logout.');
-    }
-
     private function checkLogin()
     {
-        if (!session()->has('operator')) {
-            abort(
-                redirect()->route('operator.login')
-            );
+        if (!Auth::check()) {
+            abort(redirect()->route('login'));
+        }
+
+        if (Auth::user()->role !== 'operator') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
     }
 }

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -14,7 +15,6 @@
 
     <div class="app">
 
-        <!-- SIDEBAR -->
         <aside class="sidebar">
 
             <div class="logo">
@@ -41,13 +41,13 @@
                 </a>
 
                 <a href="{{ route('operator.laporan') }}"
-                   class="{{ request()->routeIs('operator.laporan*') ? 'active' : '' }}">
+                   class="{{ request()->routeIs('operator.laporan') ? 'active' : '' }}">
                     <span>▤</span>
                     Laporan Kerusakan
                 </a>
 
-                <a href="{{ route('operator.laporan.buat') }}"
-                   class="{{ request()->routeIs('operator.laporan.buat') ? 'active' : '' }}">
+                <a href="{{ route('operator.buat-laporan') }}"
+                   class="{{ request()->routeIs('operator.buat-laporan') ? 'active' : '' }}">
                     <span>＋</span>
                     Buat Laporan
                 </a>
@@ -59,12 +59,12 @@
                 <div class="user-mini">
 
                     <div class="avatar">
-                        {{ strtoupper(substr(session('operator.nama', 'O'), 0, 1)) }}
+                        {{ strtoupper(substr(auth()->user()->name ?? 'O', 0, 1)) }}
                     </div>
 
                     <div class="user-info">
                         <strong>
-                            {{ session('operator.nama', 'Operator') }}
+                            {{ auth()->user()->name ?? 'Operator' }}
                         </strong>
 
                         <span>Operator</span>
@@ -72,7 +72,7 @@
 
                 </div>
 
-                <form action="{{ route('operator.logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST">
                     @csrf
 
                     <button type="submit" class="logout-btn">
@@ -85,8 +85,6 @@
 
         </aside>
 
-
-        <!-- CONTENT -->
         <main class="main">
 
             <header class="topbar">
@@ -104,23 +102,24 @@
                     </div>
 
                     <div class="top-user">
+
                         <div class="avatar small">
-                            {{ strtoupper(substr(session('operator.nama', 'O'), 0, 1)) }}
+                            {{ strtoupper(substr(auth()->user()->name ?? 'O', 0, 1)) }}
                         </div>
 
                         <div>
                             <strong>
-                                {{ session('operator.nama', 'Operator') }}
+                                {{ auth()->user()->name ?? 'Operator' }}
                             </strong>
 
                             <small>Operator</small>
                         </div>
+
                     </div>
 
                 </div>
 
             </header>
-
 
             <section class="content">
 
@@ -137,9 +136,7 @@
                 @endif
 
                 @if($errors->any())
-
                     <div class="alert error">
-
                         <strong>Terjadi kesalahan:</strong>
 
                         <ul>
@@ -147,9 +144,7 @@
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
-
                     </div>
-
                 @endif
 
                 @yield('content')
