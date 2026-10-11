@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('penggunaan_spareparts', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('laporan_kerusakan_id')
+                ->constrained('laporan_kerusakans')
+                ->cascadeOnDelete();
+
+            $table->foreignId('sparepart_id')
+                ->constrained('spareparts')
+                ->restrictOnDelete();
+
+            $table->unsignedInteger('jumlah');
+
+            $table->timestamps();
+
+            $table->unique([
+                'laporan_kerusakan_id',
+                'sparepart_id',
+            ]);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('penggunaan_spareparts');
+    }
+};

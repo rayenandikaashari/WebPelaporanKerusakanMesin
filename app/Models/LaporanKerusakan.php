@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LaporanKerusakan extends Model
 {
@@ -25,6 +26,14 @@ class LaporanKerusakan extends Model
         return [
             'selesai_pada' => 'datetime',
         ];
+    }
+    
+    public function penggunaanSpareparts(): HasMany
+    {
+        return $this->hasMany(
+            PenggunaanSparepart::class,
+            'laporan_kerusakan_id'
+        )->with('sparepart');
     }
 
     public function mesin(): BelongsTo

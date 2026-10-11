@@ -28,7 +28,7 @@
 
 <div class="table-card">
 
-    @if(count($laporan) == 0)
+    @if($laporan->isEmpty())
 
         <div class="empty">
 
@@ -66,40 +66,46 @@
 
             <tbody>
 
-                @foreach(array_reverse($laporan) as $item)
+                @foreach($laporan as $item)
 
                     <tr>
 
                         <td>
                             <strong>
-                                #{{ str_pad($item['id'], 3, '0', STR_PAD_LEFT) }}
+                                #{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}
                             </strong>
                         </td>
 
                         <td>
-                            {{ $item['mesin'] }}
+                            {{ $item->mesin->nama ?? '-' }}
                         </td>
 
                         <td>
                             <strong>
-                                {{ $item['judul'] }}
+                                {{ $item->judul }}
                             </strong>
 
                             <small class="table-description">
-                                {{ Str::limit($item['deskripsi'], 60) }}
+                                {{ \Illuminate\Support\Str::limit($item->deskripsi, 60) }}
                             </small>
                         </td>
 
                         <td>
-                            {{ $item['tanggal'] }}
+                            {{ $item->created_at?->format('d-m-Y H:i') ?? '-' }}
                         </td>
 
                         <td>
 
-                            @if($item['status'] == 'Selesai Diperbaiki')
+                            @if($item->status === 'Selesai Diperbaiki')
 
                                 <span class="status success-status">
                                     ✓ Selesai Diperbaiki
+                                </span>
+
+                            @elseif($item->status === 'Sedang Diperbaiki')
+
+                                <span class="status waiting-status">
+                                    ◷ Sedang Diperbaiki
                                 </span>
 
                             @else

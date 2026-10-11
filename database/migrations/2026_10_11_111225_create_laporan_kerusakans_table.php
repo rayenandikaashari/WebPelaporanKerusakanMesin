@@ -28,7 +28,7 @@ return new class extends Migration
 
             $table->string('judul');
             $table->text('deskripsi');
-            $table->string('foto')->nullable();
+            $table->longBlob('foto')->nullable();
 
             $table->enum('status', [
                 'Menunggu Ditangani',

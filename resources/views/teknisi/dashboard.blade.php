@@ -1,3 +1,4 @@
+
 @extends('layouts.teknisi')
 
 @section('title', 'Dashboard Teknisi')
@@ -37,7 +38,7 @@
 
         <div>
             <span>Total Laporan</span>
-            <strong>{{ count($laporan) }}</strong>
+            <strong>{{ $totalLaporan }}</strong>
         </div>
     </div>
 
@@ -46,9 +47,7 @@
 
         <div>
             <span>Menunggu Ditangani</span>
-            <strong>
-                {{ collect($laporan)->where('status', 'Menunggu Ditangani')->count() }}
-            </strong>
+            <strong>{{ $menunggu }}</strong>
         </div>
     </div>
 
@@ -57,9 +56,7 @@
 
         <div>
             <span>Selesai</span>
-            <strong>
-                {{ collect($laporan)->where('status', 'Selesai Diperbaiki')->count() }}
-            </strong>
+            <strong>{{ $selesai }}</strong>
         </div>
     </div>
 </div>
@@ -69,14 +66,14 @@
         <h3>Laporan Kerusakan</h3>
 
         <p>
-            Laporan dari operator yang menunggu penanganan
+            Laporan dari operator yang perlu ditangani
         </p>
     </div>
 </div>
 
 <div class="table-card">
 
-    @if(count($laporan) === 0)
+    @if($laporan->isEmpty())
 
         <div class="empty">
             <div class="empty-icon">✓</div>
@@ -104,29 +101,40 @@
             </thead>
 
             <tbody>
-                @foreach(array_reverse($laporan) as $item)
+                @foreach($laporan as $item)
                     <tr>
                         <td>
                             <strong>
-                                #{{ str_pad($item['id'], 3, '0', STR_PAD_LEFT) }}
+                                #{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}
                             </strong>
                         </td>
 
-                        <td>{{ $item['mesin'] }}</td>
-
-                        <td>{{ $item['judul'] }}</td>
-
-                        <td>{{ $item['operator'] ?? '-' }}</td>
-
-                        <td>{{ $item['tanggal'] }}</td>
+                        <td>
+                            {{ $item->mesin->nama ?? '-' }}
+                        </td>
 
                         <td>
-                            @if($item['status'] === 'Selesai Diperbaiki')
+                            {{ $item->judul }}
+                        </td>
+
+                        <td>
+                            {{ $item->operator->name ?? '-' }}
+                        </td>
+
+                        <td>
+                            {{ $item->created_at?->format('d-m-Y H:i') ?? '-' }}
+                        </td>
+
+                        <td>
+                            @if($item->status === 'Selesai Diperbaiki')
                                 <span class="status success-status">
                                     ✓ Selesai
                                 </span>
-                            @elseif($item['status'] === 'Sedang Diperbaiki')
-                                <span class="status" style="background:#eff6ff;color:#2563eb;">
+                            @elseif($item->status === 'Sedang Diperbaiki')
+                                <span
+                                    class="status"
+                                    style="background:#eff6ff;color:#2563eb;"
+                                >
                                     🔧 Sedang Diperbaiki
                                 </span>
                             @else
@@ -138,7 +146,7 @@
 
                         <td>
                             <a
-                                href="{{ route('teknisi.laporan.detail', $item['id']) }}"
+                                href="{{ route('teknisi.laporan.detail', $item->id) }}"
                                 class="btn-secondary"
                             >
                                 Detail

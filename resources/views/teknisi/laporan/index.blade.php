@@ -29,7 +29,7 @@
             </div>
         @endif
 
-        @if(count($laporan) > 0)
+        @if($laporan->isNotEmpty())
 
             <div class="laporan-list">
 
@@ -40,54 +40,50 @@
                         <div class="laporan-main">
 
                             <div class="laporan-code">
-                                {{ $item['kode'] }}
+                                #{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}
                             </div>
 
                             <h3>
-                                {{ $item['judul'] }}
+                                {{ $item->judul }}
                             </h3>
 
                             <div class="laporan-info">
 
                                 <span>
-                                    ⚙ {{ $item['mesin'] }}
+                                    ⚙ {{ $item->mesin->nama ?? '-' }}
                                 </span>
 
                                 <span>
-                                    👤 {{ $item['operator'] }}
+                                    👤 {{ $item->operator->name ?? '-' }}
                                 </span>
 
                                 <span>
-                                    📅 {{ $item['tanggal'] }}
+                                    📅 {{ $item->created_at?->format('d-m-Y H:i') ?? '-' }}
                                 </span>
 
                             </div>
 
                             <p class="laporan-description">
-                                {{ $item['kerusakan'] }}
+                                {{ $item->deskripsi }}
                             </p>
 
                             <div class="laporan-status">
 
-                                @if($item['status'] == 'Menunggu Ditangani')
+                                @if($item->status === 'Menunggu Ditangani')
                                     <span class="status-badge waiting">
                                         Menunggu Ditangani
                                     </span>
 
-                                @elseif($item['status'] == 'Sedang Diperbaiki')
+                                @elseif($item->status === 'Sedang Diperbaiki')
                                     <span class="status-badge progress">
                                         Sedang Diperbaiki
                                     </span>
 
-                                @elseif($item['status'] == 'Selesai Diperbaiki')
+                                @elseif($item->status === 'Selesai Diperbaiki')
                                     <span class="status-badge completed">
                                         Selesai Diperbaiki
                                     </span>
                                 @endif
-
-                                <span class="priority-badge">
-                                    Prioritas {{ $item['prioritas'] }}
-                                </span>
 
                             </div>
 
@@ -95,8 +91,10 @@
 
                         <div class="laporan-action">
 
-                            <a href="{{ route('teknisi.laporan.detail', $item['id']) }}"
-                               class="btn-primary">
+                            <a
+                                href="{{ route('teknisi.laporan.detail', $item->id) }}"
+                                class="btn-primary"
+                            >
                                 Lihat Detail
                             </a>
 

@@ -12,7 +12,6 @@
 
     <div class="form-card">
 
-        {{-- HEADER --}}
         <div class="form-header">
 
             <div class="form-header-icon">
@@ -21,181 +20,172 @@
 
             <div>
                 <h2>
-                    #{{ str_pad($laporan['id'], 3, '0', STR_PAD_LEFT) }}
-                    - {{ $laporan['mesin'] }}
+                    #{{ str_pad($laporan->id, 3, '0', STR_PAD_LEFT) }}
+                    - {{ $laporan->mesin->nama ?? '-' }}
                 </h2>
 
                 <p>
                     Laporan dibuat oleh
-                    {{ $laporan['operator'] ?? '-' }}
+                    {{ $laporan->operator->name ?? '-' }}
                 </p>
             </div>
 
         </div>
 
-
-        {{-- ISI DETAIL --}}
         <div style="padding: 25px;">
 
-            {{-- INFORMASI LAPORAN --}}
+            @if(session('success'))
+                <div class="alert success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="detail-grid">
 
                 <div class="detail-item">
                     <span>Kode Laporan</span>
-
                     <strong>
-                        {{ $laporan['kode'] ?? '-' }}
+                        #{{ str_pad($laporan->id, 3, '0', STR_PAD_LEFT) }}
                     </strong>
                 </div>
-
 
                 <div class="detail-item">
                     <span>Mesin</span>
-
                     <strong>
-                        {{ $laporan['mesin'] ?? '-' }}
+                        {{ $laporan->mesin->nama ?? '-' }}
                     </strong>
                 </div>
-
 
                 <div class="detail-item">
                     <span>Operator</span>
-
                     <strong>
-                        {{ $laporan['operator'] ?? '-' }}
+                        {{ $laporan->operator->name ?? '-' }}
                     </strong>
                 </div>
-
 
                 <div class="detail-item">
                     <span>Tanggal Laporan</span>
-
                     <strong>
-                        {{ $laporan['tanggal'] ?? '-' }}
+                        {{ $laporan->created_at?->format('d-m-Y H:i') ?? '-' }}
                     </strong>
                 </div>
-
 
                 <div class="detail-item">
                     <span>Prioritas</span>
-
-                    <strong>
-                        {{ $laporan['prioritas'] ?? '-' }}
-                    </strong>
+                    <strong>-</strong>
                 </div>
-
 
                 <div class="detail-item">
                     <span>Status</span>
-
-                    <strong>
-                        {{ $laporan['status'] ?? '-' }}
-                    </strong>
+                    <strong>{{ $laporan->status }}</strong>
                 </div>
 
             </div>
 
-
-            {{-- JUDUL KERUSAKAN --}}
             <div class="detail-description">
 
-                <span>
-                    Judul Kerusakan
-                </span>
+                <span>Judul Kerusakan</span>
 
-                <h3>
-                    {{ $laporan['judul'] ?? '-' }}
-                </h3>
+                <h3>{{ $laporan->judul }}</h3>
 
             </div>
 
-
-            {{-- DESKRIPSI / KERUSAKAN --}}
             <div class="detail-description">
 
-                <span>
-                    Deskripsi Kerusakan
-                </span>
+                <span>Deskripsi Kerusakan</span>
+
+                <p>{{ $laporan->deskripsi }}</p>
+
+            </div>
+
+            @if($laporan->foto)
+                <div class="detail-description">
+                    <span>Foto Kerusakan</span>
+
+                    <div style="margin-top: 10px;">
+                        <img
+                            src="{{ route('teknisi.laporan.foto', $laporan->id) }}"
+                            alt="Foto Kerusakan Mesin"
+                            class="damage-photo"
+                            style="display: block; max-width: 100%; height: auto;"
+                        >
+                    </div>
+                </div>
+            @else
+                <div class="detail-description">
+                    <span>Foto Kerusakan</span>
+                    <p>Foto tidak tersedia.</p>
+                </div>
+            @endif
+
+            <div class="detail-description">
+
+                <span>Hasil Perbaikan</span>
 
                 <p>
-                    {{ $laporan['kerusakan'] ?? '-' }}
+                    {{ $laporan->hasil_perbaikan ?: '-' }}
                 </p>
 
             </div>
 
-
-            {{-- HASIL PERBAIKAN SEBELUMNYA --}}
             <div class="detail-description">
 
-                <span>
-                    Hasil Perbaikan
-                </span>
+                <span>Sparepart yang Digunakan</span>
 
                 <p>
-                    {{ $laporan['hasil'] ?? '-' }}
+                    {{ $laporan->sparepart ?: '-' }}
                 </p>
 
             </div>
-
-
-            {{-- SPAREPART --}}
-            <div class="detail-description">
-
-                <span>
-                    Sparepart yang Digunakan
-                </span>
-
-                <p>
-                    {{ $laporan['sparepart'] ?? '-' }}
-                </p>
-
-            </div>
-
 
             <hr class="divider">
 
-
-            {{-- UPDATE STATUS --}}
             <h3 class="form-section-title">
                 Perbarui Status
             </h3>
 
-
             <form
-                action="{{ route('teknisi.laporan.status', $laporan['id']) }}"
+                action="{{ route('teknisi.laporan.status', $laporan->id) }}"
                 method="POST"
             >
 
                 @csrf
 
-
                 <div class="form-group">
 
-                    <label>
+                    <label for="status">
                         Status Perbaikan
                     </label>
 
-                    <select name="status" required>
+                    <select name="status" id="status" required>
 
                         <option
                             value="Menunggu Ditangani"
-                            {{ ($laporan['status'] ?? '') == 'Menunggu Ditangani' ? 'selected' : '' }}
+                            {{ old('status', $laporan->status) === 'Menunggu Ditangani' ? 'selected' : '' }}
                         >
                             Menunggu Ditangani
                         </option>
 
-
                         <option
                             value="Sedang Diperbaiki"
-                            {{ ($laporan['status'] ?? '') == 'Sedang Diperbaiki' ? 'selected' : '' }}
+                            {{ old('status', $laporan->status) === 'Sedang Diperbaiki' ? 'selected' : '' }}
                         >
                             Sedang Diperbaiki
                         </option>
 
-
                         <option
                             value="Selesai Diperbaiki"
-                            {{ ($laporan['status'] ?? '') == 'Selesai Diperbaiki' ? 'selected' : '' }}
+                            {{ old('status', $laporan->status) === 'Selesai Diperbaiki' ? 'selected' : '' }}
                         >
                             Selesai Diperbaiki
                         </option>
@@ -204,74 +194,96 @@
 
                 </div>
 
-
                 <div class="form-group">
 
-                    <label>
+                    <label for="hasil">
                         Hasil Perbaikan
                     </label>
 
                     <textarea
                         name="hasil"
+                        id="hasil"
                         rows="4"
                         placeholder="Jelaskan tindakan dan hasil perbaikan..."
-                    >{{ $laporan['hasil'] != '-' ? $laporan['hasil'] : '' }}</textarea>
+                    >{{ old('hasil', $laporan->hasil_perbaikan) }}</textarea>
 
                 </div>
 
+                
+            <div class="form-group">
+                <label>Sparepart yang Digunakan</label>
 
-                <div class="form-group">
+                @forelse ($spareparts as $part)
+                    @php
+                        $jumlahTerpakai = (int) (
+                            $penggunaanSpareparts->get($part->id)?->jumlah ?? 0
+                        );
 
-                    <label>
-                        Sparepart yang Digunakan
-                    </label>
+                        $jumlahInput = old(
+                            'penggunaan_spareparts.' . $part->id . '.jumlah',
+                            $jumlahTerpakai
+                        );
+                    @endphp
 
-                    <textarea
-                        name="sparepart"
-                        rows="3"
-                        placeholder="Contoh: Bearing 6204 - 2 pcs&#10;V-Belt A-45 - 1 pcs"
-                    >{{ $laporan['sparepart'] != '-' ? $laporan['sparepart'] : '' }}</textarea>
+                    <div style="display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 12px; align-items: center; margin-bottom: 14px; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px;">
+                        <div>
+                            <label for="sparepart_{{ $part->id }}" style="display: block; margin-bottom: 4px;">
+                                {{ $part->nama_sparepart }}
+                            </label>
 
-                </div>
+                            <small style="color: #6b7280;">
+                                {{ $part->kode_sparepart }}
+                                · Stok tersedia: {{ $part->stok }} {{ $part->satuan }}
+                            </small>
+                        </div>
+
+                        <div>
+                            <input
+                                type="number"
+                                id="sparepart_{{ $part->id }}"
+                                name="penggunaan_spareparts[{{ $part->id }}][jumlah]"
+                                min="0"
+                                max="{{ $part->stok + $jumlahTerpakai }}"
+                                value="{{ $jumlahInput }}"
+                                style="width: 100%; box-sizing: border-box;"
+                            >
+                        </div>
+                    </div>
+                @empty
+                    <p>Belum ada spare part aktif di database.</p>
+                @endforelse
+
+                <small style="color: #6b7280;">
+                    Isi jumlah spare part yang digunakan. Isi 0 jika tidak digunakan.
+                </small>
+            </div>
 
 
-                <button
-                    type="submit"
-                    class="btn-primary"
-                >
+                <button type="submit" class="btn-primary">
                     ✓ Simpan Perubahan
                 </button>
 
             </form>
 
-
-            {{-- HASIL JIKA SUDAH SELESAI --}}
-            @if(($laporan['status'] ?? '') == 'Selesai Diperbaiki')
+            @if($laporan->status === 'Selesai Diperbaiki')
 
                 <hr class="divider">
 
-
                 <div class="alert success">
 
-                    <strong>
-                        ✓ Perbaikan sudah selesai.
-                    </strong>
+                    <strong>✓ Perbaikan sudah selesai.</strong>
 
                     <br><br>
 
-                    <strong>
-                        Hasil Perbaikan:
-                    </strong>
+                    <strong>Hasil Perbaikan:</strong>
 
-                    {{ $laporan['hasil'] ?? '-' }}
+                    {{ $laporan->hasil_perbaikan ?: '-' }}
 
                     <br>
 
-                    <strong>
-                        Sparepart:
-                    </strong>
+                    <strong>Sparepart:</strong>
 
-                    {{ $laporan['sparepart'] ?? '-' }}
+                    {{ $laporan->sparepart ?: '-' }}
 
                 </div>
 

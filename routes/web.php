@@ -44,6 +44,11 @@ Route::middleware(['auth', 'role:teknisi'])
         Route::get('/dashboard', [TeknisiController::class, 'dashboard'])
             ->name('dashboard');
 
+        Route::get(
+            '/laporan/{id}/foto',
+            [TeknisiController::class, 'foto']
+        )->name('laporan.foto');
+
         Route::get('/laporan', [TeknisiController::class, 'laporan'])
             ->name('laporan.index');
 

@@ -20,10 +20,7 @@
 
             <div>
                 <h2>Form Laporan Kerusakan</h2>
-
-                <p>
-                    Isi informasi kerusakan mesin dengan lengkap.
-                </p>
+                <p>Isi informasi kerusakan mesin dengan lengkap.</p>
             </div>
         </div>
 
@@ -35,83 +32,87 @@
             @csrf
 
             <div class="form-group">
-                <label>
-                    Mesin
-                    <span>*</span>
+                <label for="mesin_id">
+                    Mesin <span>*</span>
                 </label>
 
-                <select name="mesin" required>
+                <select name="mesin_id" id="mesin_id" required>
                     <option value="">Pilih mesin</option>
 
-                    <option value="Mesin Produksi 01" {{ old('mesin') == 'Mesin Produksi 01' ? 'selected' : '' }}>
-                        Mesin Produksi 01
-                    </option>
-
-                    <option value="Mesin Produksi 02" {{ old('mesin') == 'Mesin Produksi 02' ? 'selected' : '' }}>
-                        Mesin Produksi 02
-                    </option>
-
-                    <option value="Mesin Produksi 03" {{ old('mesin') == 'Mesin Produksi 03' ? 'selected' : '' }}>
-                        Mesin Produksi 03
-                    </option>
-
-                    <option value="Mesin Packing 01" {{ old('mesin') == 'Mesin Packing 01' ? 'selected' : '' }}>
-                        Mesin Packing 01
-                    </option>
+                    @foreach ($mesins as $mesin)
+                        <option
+                            value="{{ $mesin->id }}"
+                            {{ old('mesin_id') == $mesin->id ? 'selected' : '' }}
+                        >
+                            {{ $mesin->nama }}
+                        </option>
+                    @endforeach
                 </select>
+
+                @error('mesin_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
 
             <div class="form-group">
-                <label>
-                    Judul Kerusakan
-                    <span>*</span>
+                <label for="judul">
+                    Judul Kerusakan <span>*</span>
                 </label>
 
                 <input
                     type="text"
+                    id="judul"
                     name="judul"
                     placeholder="Contoh: Mesin tidak dapat menyala"
                     value="{{ old('judul') }}"
+                    maxlength="255"
                     required
                 >
+
+                @error('judul')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
 
             <div class="form-group">
-                <label>
-                    Deskripsi Kerusakan
-                    <span>*</span>
+                <label for="deskripsi">
+                    Deskripsi Kerusakan <span>*</span>
                 </label>
 
                 <textarea
+                    id="deskripsi"
                     name="deskripsi"
                     rows="6"
                     placeholder="Jelaskan kondisi atau kerusakan mesin secara detail..."
                     required
                 >{{ old('deskripsi') }}</textarea>
+
+                @error('deskripsi')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
 
             <div class="form-group">
-                <label>Foto Kerusakan</label>
+                <label for="foto">Foto Kerusakan</label>
 
                 <div class="upload-box">
-                    <div class="upload-icon">
-                        📷
-                    </div>
+                    <div class="upload-icon">📷</div>
 
-                    <strong>
-                        Upload foto kerusakan
-                    </strong>
+                    <strong>Upload foto kerusakan</strong>
 
-                    <span>
-                        JPG, JPEG, PNG maksimal 2 MB
-                    </span>
+                    <span>JPG, JPEG, PNG maksimal 2 MB</span>
 
                     <input
                         type="file"
+                        id="foto"
                         name="foto"
                         accept=".jpg,.jpeg,.png"
                     >
                 </div>
+
+                @error('foto')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
 
             <div class="form-footer">
@@ -122,10 +123,7 @@
                     Batal
                 </a>
 
-                <button
-                    type="submit"
-                    class="btn-primary"
-                >
+                <button type="submit" class="btn-primary">
                     Kirim Laporan
                 </button>
             </div>
@@ -135,9 +133,7 @@
     </div>
 
     <div class="info-card">
-        <div class="info-icon">
-            ℹ
-        </div>
+        <div class="info-icon">ℹ</div>
 
         <div>
             <h3>Informasi</h3>
