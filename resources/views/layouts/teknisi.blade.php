@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -14,11 +15,9 @@
 
 <div class="app">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
 
         <div class="logo">
-
             <div class="logo-icon">
                 ⚙
             </div>
@@ -27,155 +26,96 @@
                 <h2>Maintenance</h2>
                 <span>System</span>
             </div>
-
         </div>
-
 
         <div class="menu-title">
             MENU TEKNISI
         </div>
 
-
         <nav>
 
-            <!-- Dashboard -->
             <a href="{{ route('teknisi.dashboard') }}"
                class="{{ request()->routeIs('teknisi.dashboard') ? 'active' : '' }}">
-
                 <span>▣</span>
-
                 Dashboard
-
             </a>
 
-
-            <!-- Laporan Kerusakan -->
             <a href="{{ route('teknisi.laporan.index') }}"
-               class="{{ request()->routeIs('teknisi.laporan.index*') ? 'active' : '' }}">
-
+               class="{{ request()->routeIs('teknisi.laporan.index', 'teknisi.laporan.detail', 'teknisi.laporan.status') ? 'active' : '' }}">
                 <span>▤</span>
-
                 Laporan Kerusakan
-
             </a>
 
-
-            <!-- Maintenance -->
             <a href="{{ route('teknisi.maintenance.index') }}"
-               class="{{ request()->routeIs('teknisi.maintenance.index*') ? 'active' : '' }}">
-
+               class="{{ request()->routeIs('teknisi.maintenance.index', 'teknisi.maintenance.simpan') ? 'active' : '' }}">
                 <span>⚒</span>
-
                 Laporan Maintenance
-
             </a>
 
         </nav>
 
-
-        <!-- SIDEBAR BOTTOM -->
         <div class="sidebar-bottom">
 
             <div class="user-mini">
 
                 <div class="avatar">
-
-                    {{ strtoupper(substr(session('teknisi.nama', 'T'), 0, 1)) }}
-
+                    {{ strtoupper(substr(auth()->user()->name ?? 'T', 0, 1)) }}
                 </div>
 
-
                 <div class="user-info">
-
                     <strong>
-                        {{ session('teknisi.nama', 'Teknisi') }}
+                        {{ auth()->user()->name ?? 'Teknisi' }}
                     </strong>
 
-                    <span>
-                        Teknisi
-                    </span>
-
+                    <span>Teknisi</span>
                 </div>
 
             </div>
 
-
-            <!-- Logout -->
-            <form action="{{ route('teknisi.logout') }}" method="POST">
-
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
 
                 <button type="submit" class="logout-btn">
-
                     <span>↪</span>
-
                     Logout
-
                 </button>
-
             </form>
 
         </div>
 
     </aside>
 
-
-
-    <!-- CONTENT -->
     <main class="main">
 
-
-        <!-- TOPBAR -->
         <header class="topbar">
 
             <div>
-
-                <h1>
-                    @yield('page-title', 'Dashboard')
-                </h1>
+                <h1>@yield('page-title', 'Dashboard')</h1>
 
                 <p>
-                    @yield(
-                        'page-description',
-                        'Sistem Maintenance Mesin'
-                    )
+                    @yield('page-description', 'Sistem Maintenance Mesin')
                 </p>
-
             </div>
-
 
             <div class="topbar-user">
 
-                <!-- Notification -->
                 <div class="notification">
-
                     🔔
-
                     <span></span>
-
                 </div>
 
-
-                <!-- User -->
                 <div class="top-user">
 
                     <div class="avatar small">
-
-                        {{ strtoupper(substr(session('teknisi.nama', 'T'), 0, 1)) }}
-
+                        {{ strtoupper(substr(auth()->user()->name ?? 'T', 0, 1)) }}
                     </div>
 
-
                     <div>
-
                         <strong>
-                            {{ session('teknisi.nama', 'Teknisi') }}
+                            {{ auth()->user()->name ?? 'Teknisi' }}
                         </strong>
 
-                        <small>
-                            Teknisi
-                        </small>
-
+                        <small>Teknisi</small>
                     </div>
 
                 </div>
@@ -184,68 +124,33 @@
 
         </header>
 
-
-
-        <!-- PAGE CONTENT -->
         <section class="content">
 
-
-            <!-- SUCCESS -->
             @if(session('success'))
-
                 <div class="alert success">
-
                     ✓ {{ session('success') }}
-
                 </div>
-
             @endif
 
-
-
-            <!-- ERROR -->
             @if(session('error'))
-
                 <div class="alert error">
-
                     ! {{ session('error') }}
-
                 </div>
-
             @endif
 
-
-
-            <!-- VALIDATION ERROR -->
             @if($errors->any())
-
                 <div class="alert error">
-
-                    <strong>
-                        Terjadi kesalahan:
-                    </strong>
+                    <strong>Terjadi kesalahan:</strong>
 
                     <ul>
-
                         @foreach($errors->all() as $error)
-
-                            <li>
-                                {{ $error }}
-                            </li>
-
+                            <li>{{ $error }}</li>
                         @endforeach
-
                     </ul>
-
                 </div>
-
             @endif
 
-
-
-            <!-- CHILD CONTENT -->
             @yield('content')
-
 
         </section>
 
