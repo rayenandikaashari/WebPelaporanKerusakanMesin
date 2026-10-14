@@ -130,7 +130,7 @@
 
         </div>
 
-        <a href="{{ route('supervisor.laporan.index') }}"
+        <a href="{{ route('supervisor.laporan') }}"
            class="btn-primary">
 
             Lihat Semua
