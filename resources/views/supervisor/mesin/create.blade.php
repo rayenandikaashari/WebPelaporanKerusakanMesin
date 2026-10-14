@@ -86,12 +86,9 @@
 
         <div class="form-actions">
 
-            <a
-                href="{{ route('supervisor.mesin.index') }}"
-                class="btn-secondary"
-            >
-                Batal
-            </a>
+            <a href="{{ route('supervisor.data.mesin') }}">
+    Batal
+</a>
 
             <button
                 type="submit"
