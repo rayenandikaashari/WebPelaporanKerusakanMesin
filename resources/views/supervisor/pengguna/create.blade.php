@@ -102,53 +102,29 @@
 
         </div>
 
+<div class="form-group">
+    <label for="role">Role</label>
 
-        <div class="form-group">
+    <select id="role" name="role" required>
+        <option value="">-- Pilih Role --</option>
 
-            <label for="role">
-                Role
-            </label>
+        <option value="operator" {{ old('role') == 'operator' ? 'selected' : '' }}>
+            Operator
+        </option>
 
-            <select
-                id="role"
-                name="role"
-                required
-            >
+        <option value="teknisi" {{ old('role') == 'teknisi' ? 'selected' : '' }}>
+            Teknisi
+        </option>
 
-                <option value="">
-                    -- Pilih Role --
-                </option>
+        <option value="supervisor" {{ old('role') == 'supervisor' ? 'selected' : '' }}>
+            Supervisor
+        </option>
+    </select>
 
-                <option
-                    value="Operator"
-                    {{ old('role') == 'Operator' ? 'selected' : '' }}
-                >
-                    Operator
-                </option>
-
-                <option
-                    value="Teknisi"
-                    {{ old('role') == 'Teknisi' ? 'selected' : '' }}
-                >
-                    Teknisi
-                </option>
-
-                <option
-                    value="Supervisor"
-                    {{ old('role') == 'Supervisor' ? 'selected' : '' }}
-                >
-                    Supervisor
-                </option>
-
-            </select>
-
-            @error('role')
-                <span class="error-message">
-                    {{ $message }}
-                </span>
-            @enderror
-
-        </div>
+    @error('role')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+</div>
 
 
         <div class="form-group">

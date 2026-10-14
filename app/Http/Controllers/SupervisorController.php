@@ -450,29 +450,25 @@ class SupervisorController extends Controller
     }
 
     public function storePengguna(Request $request)
-    {
-        $validated = $request->validate([
-            'nama' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-            'username' => [
-                'required',
-                'email',
-                'max:255',
-                'unique:users,email',
-            ],
-            'role' => [
-                'required',
-                Rule::in(['operator', 'teknisi', 'supervisor']),
-            ],
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-            ],
-        ]);
+{
+    $request->merge([
+        'role' => strtolower(trim($request->input('role', ''))),
+    ]);
+
+    $validated = $request->validate([
+        'nama' => ['required', 'string', 'max:255'],
+        'username' => [
+            'required',
+            'email',
+            'max:255',
+            'unique:users,email',
+        ],
+        'role' => [
+            'required',
+            Rule::in(['operator', 'teknisi', 'supervisor']),
+        ],
+        'password' => ['required', 'string', 'min:8'],
+    ]);
 
         $user = new User();
 
@@ -508,6 +504,10 @@ class SupervisorController extends Controller
 
     public function updatePengguna(Request $request, $id)
     {
+        $request->merge([
+    'role' => strtolower(trim($request->input('role', ''))),
+]);
+
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
