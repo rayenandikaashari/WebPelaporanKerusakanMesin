@@ -1,4 +1,3 @@
-
 @extends('layouts.operator')
 
 @section('title', 'Dashboard Operator')
@@ -13,13 +12,9 @@
     <div>
         <span class="welcome-label">Selamat datang kembali</span>
 
-        <h2>
-            {{ auth()->user()->name }} 👋
-        </h2>
+        <h2>{{ auth()->user()->name }} 👋</h2>
 
-        <p>
-            Pantau laporan kerusakan mesin yang telah Anda buat.
-        </p>
+        <p>Pantau laporan kerusakan mesin yang telah Anda buat.</p>
     </div>
 
     <a href="{{ route('operator.buat-laporan') }}" class="btn-primary">
@@ -29,38 +24,29 @@
 
 <div class="stats">
     <div class="stat-card">
-        <div class="stat-icon blue">
-            ▤
-        </div>
-
+        <div class="stat-icon blue">▤</div>
         <div>
             <span>Total Laporan</span>
-            <strong>{{ count($laporan) }}</strong>
+            <strong>{{ $laporan->count() }}</strong>
         </div>
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon orange">
-            ◷
-        </div>
-
+        <div class="stat-icon orange">◷</div>
         <div>
             <span>Menunggu Ditangani</span>
             <strong>
-                {{ collect($laporan)->where('status', 'Menunggu Ditangani')->count() }}
+                {{ $laporan->where('status', 'Menunggu Ditangani')->count() }}
             </strong>
         </div>
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon green">
-            ✓
-        </div>
-
+        <div class="stat-icon green">✓</div>
         <div>
             <span>Selesai Diperbaiki</span>
             <strong>
-                {{ collect($laporan)->where('status', 'Selesai Diperbaiki')->count() }}
+                {{ $laporan->where('status', 'Selesai Diperbaiki')->count() }}
             </strong>
         </div>
     </div>
@@ -78,17 +64,13 @@
 </div>
 
 <div class="table-card">
-    @if(count($laporan) == 0)
+    @if($laporan->isEmpty())
         <div class="empty">
-            <div class="empty-icon">
-                ▤
-            </div>
+            <div class="empty-icon">▤</div>
 
             <h3>Belum ada laporan</h3>
 
-            <p>
-                Anda belum membuat laporan kerusakan mesin.
-            </p>
+            <p>Anda belum membuat laporan kerusakan mesin.</p>
 
             <a href="{{ route('operator.buat-laporan') }}" class="btn-primary">
                 + Buat Laporan
@@ -107,28 +89,34 @@
             </thead>
 
             <tbody>
-                @foreach(array_slice(array_reverse($laporan), 0, 5) as $item)
+                @foreach($laporan->take(5) as $item)
                     <tr>
                         <td>
                             <strong>
-                                #{{ str_pad($item['id'], 3, '0', STR_PAD_LEFT) }}
+                                #{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}
                             </strong>
                         </td>
 
-                        <td>{{ $item['mesin'] }}</td>
-
-                        <td>{{ $item['judul'] }}</td>
-
-                        <td>{{ $item['tanggal'] }}</td>
+                        <td>
+                            {{ $item->mesin?->nama ?? '-' }}
+                        </td>
 
                         <td>
-                            @if($item['status'] == 'Selesai Diperbaiki')
+                            {{ $item->judul ?? $item->deskripsi_kerusakan ?? '-' }}
+                        </td>
+
+                        <td>
+                            {{ $item->created_at?->format('d/m/Y') ?? '-' }}
+                        </td>
+
+                        <td>
+                            @if($item->status === 'Selesai Diperbaiki')
                                 <span class="status success-status">
                                     ✓ Selesai
                                 </span>
                             @else
                                 <span class="status waiting-status">
-                                    ◷ Menunggu Ditangani
+                                    ◷ {{ $item->status ?? 'Menunggu Ditangani' }}
                                 </span>
                             @endif
                         </td>
