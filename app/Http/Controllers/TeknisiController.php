@@ -7,6 +7,7 @@ use App\Models\LaporanMaintenance;
 use App\Models\Mesin;
 use App\Models\Sparepart;
 use App\Models\PenggunaanSparepart;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -89,7 +90,9 @@ class TeknisiController extends Controller
      */
     public function foto($id)
     {
-        $laporan = LaporanKerusakan::findOrFail($id);
+        $laporan = LaporanKerusakan::query()
+            ->lockForUpdate()
+            ->findOrFail($id);
 
         if (empty($laporan->foto)) {
             abort(404, 'Foto tidak tersedia.');
@@ -138,8 +141,11 @@ class TeknisiController extends Controller
      * Memperbarui status perbaikan dan penggunaan spare part.
      * Perubahan stok dan laporan dilakukan dalam satu transaksi.
      */
-    public function updateStatus(Request $request, $id)
-    {
+    public function updateStatus(
+        Request $request,
+        NotificationService $notificationService,
+        $id
+    ) {
         $validated = $request->validate([
             'status' => [
                 'required',
@@ -154,8 +160,17 @@ class TeknisiController extends Controller
             ],
         ]);
 
-        DB::transaction(function () use ($validated, $id) {
+        $statusSebelumnya = null;
+        $laporanUntukNotifikasi = null;
+
+        DB::transaction(function () use (
+            $validated,
+            $id,
+            &$statusSebelumnya,
+            &$laporanUntukNotifikasi
+        ) {
             $laporan = LaporanKerusakan::findOrFail($id);
+            $statusSebelumnya = $laporan->status;
 
             $laporan->status = $validated['status'];
             $laporan->teknisi_id = Auth::id();
@@ -167,6 +182,10 @@ class TeknisiController extends Controller
                     : null;
 
             $laporan->save();
+            $laporanUntukNotifikasi = $laporan->fresh([
+                'mesin',
+                'teknisi',
+            ]);
 
             /*
              * Jika form belum mengirim data spare part,
@@ -274,6 +293,48 @@ class TeknisiController extends Controller
             }
         });
 
+        if (
+            $statusSebelumnya !== $validated['status']
+            && $laporanUntukNotifikasi
+        ) {
+            $laporan = $laporanUntukNotifikasi;
+            $namaMesin = $laporan->mesin->nama ?? 'Mesin';
+            $namaTeknisi = $laporan->teknisi->name ?? 'Teknisi';
+            $statusBaru = $validated['status'];
+
+            if ($statusBaru === 'Sedang Diperbaiki') {
+                $judul = 'Perbaikan mulai dilakukan';
+                $pesan = "Laporan {$laporan->judul} pada {$namaMesin} "
+                    ."sedang diperbaiki oleh {$namaTeknisi}.";
+            } elseif ($statusBaru === 'Selesai Diperbaiki') {
+                $judul = 'Perbaikan berhasil diselesaikan';
+                $pesan = "Laporan {$laporan->judul} pada {$namaMesin} "
+                    ."telah selesai diperbaiki oleh {$namaTeknisi}.";
+            } else {
+                $judul = 'Status laporan diperbarui';
+                $pesan = "Status laporan {$laporan->judul} pada {$namaMesin} "
+                    ."berubah menjadi {$statusBaru}.";
+            }
+
+            $notificationService->sendToUser(
+                $laporan->operator_id,
+                $laporan->id,
+                'status_laporan',
+                $judul,
+                $pesan,
+                route('operator.laporan').'#laporan-'.$laporan->id
+            );
+
+            $notificationService->sendToRole(
+                'supervisor',
+                $laporan->id,
+                'status_laporan',
+                $judul,
+                $pesan,
+                route('supervisor.laporan')
+            );
+        }
+
         return redirect()
             ->route('teknisi.laporan.detail', $id)
             ->with(
@@ -335,15 +396,17 @@ class TeknisiController extends Controller
     /**
      * Menyimpan hasil maintenance harian.
      */
-    public function simpanMaintenance(Request $request)
-    {
+    public function simpanMaintenance(
+        Request $request,
+        NotificationService $notificationService
+    ) {
         $validated = $request->validate([
             'tanggal' => ['required', 'date'],
             'mesin_id' => ['required', 'exists:mesins,id'],
             'keterangan' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        LaporanMaintenance::updateOrCreate(
+        $maintenance = LaporanMaintenance::updateOrCreate(
             [
                 'mesin_id' => $validated['mesin_id'],
                 'tanggal' => $validated['tanggal'],
@@ -355,6 +418,19 @@ class TeknisiController extends Controller
                 'keterangan' => $validated['keterangan']
                     ?: 'Mesin telah diperiksa dan dalam kondisi normal.',
             ]
+        );
+
+        $maintenance->load(['mesin', 'teknisi']);
+        $namaMesin = $maintenance->mesin->nama ?? 'Mesin';
+        $namaTeknisi = $maintenance->teknisi->name ?? 'Teknisi';
+
+        $notificationService->sendToRole(
+            'supervisor',
+            null,
+            'maintenance',
+            'Maintenance mesin dicatat',
+            "Teknisi {$namaTeknisi} telah mencatat maintenance mesin {$namaMesin}.",
+            route('supervisor.maintenance')
         );
 
         return redirect()

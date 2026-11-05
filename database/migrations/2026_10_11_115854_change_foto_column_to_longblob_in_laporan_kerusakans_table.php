@@ -7,6 +7,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (DB::connection()->getDriverName() !== 'mysql') {
+            return;
+        }
+
         DB::statement(
             'ALTER TABLE laporan_kerusakans MODIFY foto LONGBLOB NULL'
         );
@@ -14,6 +18,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (DB::connection()->getDriverName() !== 'mysql') {
+            return;
+        }
+
         DB::statement(
             'ALTER TABLE laporan_kerusakans MODIFY foto VARCHAR(255) NULL'
         );

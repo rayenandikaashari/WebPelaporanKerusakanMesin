@@ -5,17 +5,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Teknisi') - Sistem Maintenance</title>
 
     <link rel="stylesheet" href="{{ asset('css/operator.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/notifications.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
 </head>
 
 <body>
 
 <div class="app">
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="appSidebar">
 
         <div class="logo">
             <div class="logo-icon">
@@ -85,24 +88,33 @@
 
     </aside>
 
+    <div class="mobile-sidebar-overlay"
+         id="mobileSidebarOverlay"
+         aria-hidden="true"></div>
+
     <main class="main">
 
         <header class="topbar">
 
-            <div>
-                <h1>@yield('page-title', 'Dashboard')</h1>
+            <div class="topbar-heading">
+                <button type="button"
+                        class="mobile-menu-toggle"
+                        id="mobileMenuToggle"
+                        aria-label="Buka menu"
+                        aria-controls="appSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
 
-                <p>
-                    @yield('page-description', 'Sistem Maintenance Mesin')
-                </p>
+                <div>
+                    <h1>@yield('page-title', 'Dashboard')</h1>
+                    <p>@yield('page-description', 'Sistem Maintenance Mesin')</p>
+                </div>
             </div>
 
             <div class="topbar-user">
 
-                <div class="notification">
-                    🔔
-                    <span></span>
-                </div>
+                @include('partials.notification-bell')
 
                 <div class="top-user">
 
@@ -157,6 +169,8 @@
     </main>
 
 </div>
+<script src="{{ asset('js/notifications.js') }}" defer></script>
+<script src="{{ asset('js/responsive-layout.js') }}" defer></script>
 
 </body>
 
