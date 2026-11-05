@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OperatorController;
-use App\Http\Controllers\TeknisiController;
 use App\Http\Controllers\SupervisorController;
+use App\Http\Controllers\TeknisiController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -63,6 +64,21 @@ Route::middleware(['auth', 'role:teknisi'])
 
         Route::post('/maintenance', [TeknisiController::class, 'simpanMaintenance'])
             ->name('maintenance.simpan');
+    });
+
+Route::middleware('auth')
+    ->prefix('notifikasi')
+    ->name('notifications.')
+    ->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])
+            ->name('index');
+
+        Route::post('/read-all', [NotificationController::class, 'readAll'])
+            ->name('read-all');
+
+        Route::post('/{id}/read', [NotificationController::class, 'read'])
+            ->whereNumber('id')
+            ->name('read');
     });
 
 Route::middleware(['auth', 'role:supervisor'])

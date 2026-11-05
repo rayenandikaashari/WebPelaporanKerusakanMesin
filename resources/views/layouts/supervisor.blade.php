@@ -4,60 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Supervisor') - Sistem Maintenance</title>
 
     <link rel="stylesheet" href="{{ asset('css/operator.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/supervisor-layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/notifications.css') }}">
 </head>
+
+@php
+    $supervisorName = auth()->user()->name
+        ?? session('supervisor.nama', 'Supervisor');
+@endphp
 
 <body>
 
-<div class="app-container">
+<div class="app supervisor-layout">
 
-    {{-- SIDEBAR --}}
     <aside class="sidebar">
 
-        <div class="sidebar-header">
-            <div class="sidebar-logo">🔧</div>
+        <div class="logo">
+            <div class="logo-icon">⚙</div>
 
             <div>
-                <strong>Sistem Maintenance</strong>
-                <span>Supervisor</span>
+                <h2>Maintenance</h2>
+                <span>System</span>
             </div>
         </div>
 
-        <nav class="sidebar-menu">
+        <div class="menu-title">
+            MENU SUPERVISOR
+        </div>
 
-            {{-- DASHBOARD --}}
+        <nav>
+
             <a href="{{ route('supervisor.dashboard') }}"
                class="{{ request()->routeIs('supervisor.dashboard') ? 'active' : '' }}">
-                <span>▦</span>
+                <span>▣</span>
                 Dashboard
             </a>
 
-            {{-- STATUS MESIN --}}
             <a href="{{ route('supervisor.mesin') }}"
                class="{{ request()->routeIs('supervisor.mesin') ? 'active' : '' }}">
                 <span>⚙</span>
                 Status Mesin
             </a>
 
-            {{-- LAPORAN KERUSAKAN --}}
             <a href="{{ route('supervisor.laporan') }}"
                class="{{ request()->routeIs('supervisor.laporan') ? 'active' : '' }}">
                 <span>▤</span>
                 Laporan Kerusakan
             </a>
 
-            {{-- LAPORAN MAINTENANCE --}}
             <a href="{{ route('supervisor.maintenance') }}"
                class="{{ request()->routeIs('supervisor.maintenance') ? 'active' : '' }}">
-                <span>🔧</span>
+                <span>⚒</span>
                 Laporan Maintenance
             </a>
 
-            {{-- RIWAYAT --}}
-            <div class="sidebar-section">RIWAYAT</div>
+            <div class="menu-title">
+                RIWAYAT
+            </div>
 
             <a href="{{ route('supervisor.riwayat.kerusakan') }}"
                class="{{ request()->routeIs('supervisor.riwayat.kerusakan') ? 'active' : '' }}">
@@ -71,15 +79,15 @@
                 Riwayat Perbaikan
             </a>
 
-            {{-- PENGGUNAAN SPAREPART --}}
             <a href="{{ route('supervisor.sparepart') }}"
                class="{{ request()->routeIs('supervisor.sparepart') ? 'active' : '' }}">
                 <span>▣</span>
                 Penggunaan Sparepart
             </a>
 
-            {{-- DATA MASTER --}}
-            <div class="sidebar-section">DATA MASTER</div>
+            <div class="menu-title">
+                DATA MASTER
+            </div>
 
             <a href="{{ route('supervisor.data.mesin') }}"
                class="{{ request()->routeIs('supervisor.data.mesin', 'supervisor.mesin.create', 'supervisor.mesin.edit') ? 'active' : '' }}">
@@ -101,26 +109,25 @@
 
         </nav>
 
-        {{-- SIDEBAR FOOTER --}}
-        <div class="sidebar-footer">
+        <div class="sidebar-bottom">
 
-            <div class="user-info">
-                <div class="user-avatar">S</div>
+            <div class="user-mini">
+                <div class="avatar">
+                    {{ strtoupper(substr($supervisorName, 0, 1)) }}
+                </div>
 
-                <div>
-                    <strong>
-                        {{ session('supervisor.nama', 'Supervisor') }}
-                    </strong>
+                <div class="user-info">
+                    <strong>{{ $supervisorName }}</strong>
                     <span>Supervisor</span>
                 </div>
             </div>
 
-            {{-- LOGOUT --}}
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
 
-                <button type="submit" class="logout-button">
-                    ↪ Logout
+                <button type="submit" class="logout-btn">
+                    <span>↪</span>
+                    Logout
                 </button>
             </form>
 
@@ -128,38 +135,50 @@
 
     </aside>
 
-    {{-- MAIN CONTENT --}}
-    <main class="main-content">
+    <main class="main">
 
-        <header class="top-header">
+        <header class="topbar">
+
             <div>
                 <h1>@yield('page-title', 'Dashboard')</h1>
-
-                <p>
-                    @yield('page-description', 'Sistem Maintenance Mesin')
-                </p>
+                <p>@yield('page-description', 'Sistem Maintenance Mesin')</p>
             </div>
+
+            <div class="topbar-user">
+                @include('partials.notification-bell')
+
+                <div class="top-user">
+                    <div class="avatar small">
+                        {{ strtoupper(substr($supervisorName, 0, 1)) }}
+                    </div>
+
+                    <div>
+                        <strong>{{ $supervisorName }}</strong>
+                        <small>Supervisor</small>
+                    </div>
+                </div>
+            </div>
+
         </header>
 
         <section class="content">
 
-            {{-- PESAN SUKSES --}}
             @if(session('success'))
                 <div class="alert success">
                     ✓ {{ session('success') }}
                 </div>
             @endif
 
-            {{-- PESAN ERROR --}}
             @if(session('error'))
                 <div class="alert error">
-                    ⚠ {{ session('error') }}
+                    ! {{ session('error') }}
                 </div>
             @endif
 
-            {{-- VALIDASI FORM --}}
             @if($errors->any())
                 <div class="alert error">
+                    <strong>Terjadi kesalahan:</strong>
+
                     <ul>
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -168,7 +187,6 @@
                 </div>
             @endif
 
-            {{-- KONTEN HALAMAN --}}
             @yield('content')
 
         </section>
@@ -176,6 +194,8 @@
     </main>
 
 </div>
+
+<script src="{{ asset('js/notifications.js') }}" defer></script>
 
 </body>
 </html>

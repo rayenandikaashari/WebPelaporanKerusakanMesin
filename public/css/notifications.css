@@ -1,0 +1,228 @@
+.notification-wrapper {
+    position: relative;
+    z-index: 999;
+}
+
+.notification-trigger {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.notification-trigger:hover,
+.notification-trigger[aria-expanded="true"] {
+    background: #f1f5f9;
+}
+
+.notification-count {
+    position: absolute;
+    top: -3px;
+    right: -5px;
+    min-width: 19px;
+    height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    background: #dc2626;
+    color: white;
+    border: 2px solid white;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.notification-count[hidden] {
+    display: none;
+}
+
+.notification-panel {
+    position: absolute;
+    top: 52px;
+    right: 0;
+    width: 370px;
+    max-width: calc(100vw - 30px);
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, .12);
+    overflow: hidden;
+}
+
+.notification-panel[hidden] {
+    display: none;
+}
+
+.notification-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 17px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.notification-panel-header strong {
+    font-size: 15px;
+    color: #111827;
+}
+
+.notification-panel-header small {
+    display: block;
+    margin-top: 5px;
+    color: #6b7280;
+    font-size: 11px;
+}
+
+.notification-close {
+    border: 0;
+    background: none;
+    font-size: 23px;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.notification-actions {
+    padding: 9px 15px;
+    text-align: right;
+    border-bottom: 1px solid #f1f2f4;
+}
+
+.notification-actions button {
+    border: 0;
+    background: transparent;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.notification-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 15px;
+    border-bottom: 1px solid #f1f2f4;
+    text-decoration: none;
+    transition: background .2s;
+}
+
+.notification-item:hover {
+    background: #f8fafc;
+}
+
+.notification-item.is-unread {
+    background: #eff6ff;
+}
+
+.notification-item.is-read {
+    background: white;
+}
+
+.notification-item-icon {
+    flex-shrink: 0;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-item-icon.status {
+    color: #2563eb;
+    background: #dbeafe;
+}
+
+.notification-item-icon.new-report {
+    color: #b45309;
+    background: #fef3c7;
+}
+
+.notification-item-icon.maintenance {
+    color: #15803d;
+    background: #dcfce7;
+}
+
+.notification-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-item-content strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #1f2937;
+    font-size: 13px;
+}
+
+.notification-item-content small {
+    display: block;
+    color: #6b7280;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.notification-item-content time {
+    display: block;
+    margin-top: 7px;
+    color: #9ca3af;
+    font-size: 10px;
+}
+
+.unread-indicator {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: #2563eb;
+}
+
+.notification-empty {
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    color: #9ca3af;
+    text-align: center;
+    font-size: 12px;
+}
+
+.notification-empty > span {
+    color: #16a34a;
+    font-size: 25px;
+}
+
+.notification-empty strong {
+    color: #374151;
+    font-size: 13px;
+}
+
+.notification-empty small {
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+.notification-error {
+    color: #b91c1c;
+}
+
+@media (max-width: 700px) {
+    .notification-panel {
+        right: -62px;
+    }
+}

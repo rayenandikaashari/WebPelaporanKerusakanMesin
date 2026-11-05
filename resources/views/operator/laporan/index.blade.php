@@ -68,7 +68,7 @@
 
                 @foreach($laporan as $item)
 
-                    <tr>
+                    <tr id="laporan-{{ $item->id }}">
 
                         <td>
                             <strong>

@@ -28,12 +28,12 @@ return new class extends Migration
 
             $table->string('judul');
             $table->text('deskripsi');
-            $table->longBlob('foto')->nullable();
+            $table->binary('foto')->nullable();
 
             $table->enum('status', [
                 'Menunggu Ditangani',
                 'Sedang Diperbaiki',
-                'Selesai Diperbaiki'
+                'Selesai Diperbaiki',
             ])->default('Menunggu Ditangani');
 
             $table->text('hasil_perbaikan')->nullable();
